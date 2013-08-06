@@ -11,7 +11,7 @@
 
 Exec {
   path => [
-    $pp_script_path, '/usr/local/sbin', '/usr/local/bin',
+    $pp_scripts_path, '/usr/local/sbin', '/usr/local/bin',
     '/usr/sbin', '/usr/bin', '/sbin', '/bin'
   ]
 }
