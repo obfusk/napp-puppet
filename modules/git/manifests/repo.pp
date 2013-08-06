@@ -26,7 +26,7 @@ define git::repo (
   $clone_args = shellquote($branch_opt, $source, $path)
 
   exec { "git clone => $path":
-    command   => "git clone $clone",
+    command   => "git clone $clone_args",
     creates   => "$path/.git",
     logoutput => on_failure,
   }

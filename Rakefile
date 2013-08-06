@@ -18,3 +18,9 @@ desc 'Check'
 task :check do
   sh "find -name '*.pp' | xargs -n 1 -t puppet parser validate"
 end
+
+desc 'Sync'
+task :sync do
+  to = '~/tmp/vagrant/puppet/shared/napp-puppet'
+  sh "rsync -av --progress ./ #{to}/"
+end
