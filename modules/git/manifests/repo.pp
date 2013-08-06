@@ -45,8 +45,8 @@ define git::repo (
     $checkout_commit = shellquote($checkout[1])
 
     exec { "git checkout => $path":
-      command   => "git checkout -b $checkout_branch $checkout_commit"
-      unless    => "test \"$( git symbolic-ref HEAD )\" == 'refs/heads/'$checkout_branch"
+      command   => "git checkout -b $checkout_branch $checkout_commit",
+      unless    => "test \"$( git symbolic-ref HEAD )\" == 'refs/heads/'$checkout_branch",
       cwd       => $path,
       logoutput => $log,
       require   => "git clone => $path",
