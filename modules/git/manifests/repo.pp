@@ -18,15 +18,16 @@ define git::repo (
   $log      = true,     # log output for pull/checkout
 ) {
   if $branch == undef {
-    $branch_opt = ''
+    $branch_arg = ''
   } else {
-    $branch_opt = "-b $branch"
+    $branch_sh  = shellquote($branch)
+    $branch_arg = "-b $branch_sh"
   }
 
-  $clone_args = shellquote($branch_opt, $source, $path)
+  $clone_args = shellquote($source, $path)
 
   exec { "git clone => $path":
-    command   => "git clone $clone_args",
+    command   => "git clone $branch_arg $clone_args",
     creates   => "$path/.git",
     logoutput => on_failure,
   }
@@ -40,13 +41,13 @@ define git::repo (
     }
   }
 
-  if $checkout == true {
+  if $checkout != undef {
     $checkout_branch = shellquote($checkout[0])
     $checkout_commit = shellquote($checkout[1])
 
     exec { "git checkout => $path":
       command   => "git checkout -b $checkout_branch $checkout_commit",
-      unless    => "test \"$( git symbolic-ref HEAD )\" == 'refs/heads/'$checkout_branch",
+      unless    => "test \"$( git symbolic-ref HEAD )\" = 'refs/heads/'$checkout_branch",
       cwd       => $path,
       logoutput => $log,
       require   => Exec["git clone => $path"],
