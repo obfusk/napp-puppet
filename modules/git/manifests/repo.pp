@@ -36,7 +36,7 @@ define git::repo (
       command   => 'git pull',
       cwd       => $path,
       logoutput => $log,
-      require   => "git clone => $path",
+      require   => Exec["git clone => $path"],
     }
   }
 
@@ -49,7 +49,7 @@ define git::repo (
       unless    => "test \"$( git symbolic-ref HEAD )\" == 'refs/heads/'$checkout_branch",
       cwd       => $path,
       logoutput => $log,
-      require   => "git clone => $path",
+      require   => Exec["git clone => $path"],
     }
   }
 }

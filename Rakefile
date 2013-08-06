@@ -1,7 +1,20 @@
+mp = "#{ Dir.pwd }/modules"
+sp = "#{ Dir.pwd }/scripts"
+
+ENV['FACTER_pp_scripts_path'] = sp
+args = "--modulepath #{mp} -v manifests/site.pp"
+
 desc 'Apply'
 task :apply do
-  mp = "#{ Dir.pwd }/modules"
-  sp = "#{ Dir.pwd }/scripts"
-  ENV['FACTER_pp_scripts_path'] = sp
-  sh "puppet apply --modulepath #{mp} -v manifests/site.pp"
+  sh "puppet apply #{args}"
+end
+
+desc 'Noop'
+task :noop do
+  sh "puppet apply --noop #{args}"
+end
+
+desc 'Check'
+task :check do
+  sh "find -name '*.pp' | xargs -n 1 -t puppet parser validate"
 end
