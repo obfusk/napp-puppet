@@ -17,7 +17,7 @@ define lein (
 ) {
   $args = shellquote($path, $version, $sha512, $url)
 
-  package { 'curl': ensure => 'installed' }
+  realize Package['curl']
 
   exec { "[leiningen] ${path}":
     command   => "pp-install-leiningen ${args}",

@@ -22,11 +22,11 @@ define nodejs (
   $sha512 = $arch ? { 'x86' => $sha512_x86, default => $sha512_x64 }
   $args   = shellquote($path, $version, $arch, $sha512, $url)
 
-  package { 'curl': ensure => 'installed' }
+  realize Package['curl']
 
   exec { "[nodejs] ${path}":
     command   => "pp-install-nodejs ${args}",
-    unless    => "head -n1 ${path}/ChangeLog | grep -F 'Version ${version} '"
+    unless    => "head -n1 ${path}/ChangeLog | grep -F 'Version ${version} '",
     logoutput => true,
     require   => Package['curl'],
   }

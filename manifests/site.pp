@@ -11,6 +11,7 @@
 
 import 'path.pp'
 import 'aptitude.pp'
+import 'packages.pp'
 
 node 'vm-puppet' {
   include java7::maven

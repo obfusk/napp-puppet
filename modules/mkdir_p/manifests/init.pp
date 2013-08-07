@@ -15,8 +15,8 @@ define mkdir_p (
   $path_sh = shellquote($path)
 
   exec { "[mkdir_p] ${path}":
-    command => "mkdir -p ${path_sh}"
-    unless  => "test -d ${path_sh}"
+    command => "mkdir -p ${path_sh}",
+    unless  => "test -d ${path_sh}",
   }
 }
 

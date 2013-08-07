@@ -26,7 +26,7 @@ define git::repo (
 
   $clone_args = shellquote($source, $path)
 
-  package { 'git': ensure => 'installed' }
+  realize Package['git']
 
   exec { "[git clone] ${path}":
     command   => "git clone ${branch_arg} ${clone_args}",

@@ -15,8 +15,8 @@ define mkdir_p::dirname (
   $path_sh = shellquote($path)
 
   exec { "[mkdir_p::dirname] ${path}":
-    command => "mkdir -p \"$( dirname ${path_sh} )\""
-    unless  => "test -d \"$( dirname ${path_sh} )\""
+    command => "mkdir -p \"$( dirname ${path_sh} )\"",
+    unless  => "test -d \"$( dirname ${path_sh} )\"",
   }
 }
 
