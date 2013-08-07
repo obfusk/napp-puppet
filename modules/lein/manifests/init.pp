@@ -18,10 +18,13 @@ define lein (
 
   $args = shellquote($path, $version, $sha512, $url)
 
+  package { 'curl': ensure => 'installed' }
+
   exec { "install leiningen => ${path}":
     command   => "pp-install-leiningen ${args}",
     unless    => "grep -F 'export LEIN_VERSION=\"${version}\"' ${path}",
     logoutput => true,
+    require   => Package['curl'],
   }
 
   file { $path:

@@ -26,10 +26,13 @@ define git::repo (
 
   $clone_args = shellquote($source, $path)
 
+  package { 'git': ensure => 'installed' }
+
   exec { "git clone => ${path}":
     command   => "git clone ${branch_arg} ${clone_args}",
     creates   => "${path}/.git",
     logoutput => on_failure,
+    require   => Package['git'],
   }
 
   if $pull == true {
