@@ -14,11 +14,13 @@ define nodejs (
   $bin        = undef,
   $npm        = undef,
   $version    = '0.10.15',
-  $arch       = 'x64',
   $sha512_x64 = 'd845a678d57daf38b96e3cbcb824157f3feda5d05c16d9de8314d3e4aa9d4c3bc73deeae568c5e665430a6806bc5b78341a46ba6efda03a3b925f0726edf78f2',
   $sha512_x86 = '39c6b425f37b4e3d1bf31dace4b797f33646bd66034d004426515ce7fe04e74c166679fd877cf2ba3a3bebc50de54bd1a2fb06c5cb9798366649eacb3da0eeb8',
   $url        = 'http://nodejs.org/dist/v__VERSION__/node-v__VERSION__-linux-__ARCH__.tar.gz',
 ) {
+  $arch = $architecture ? { 'i386' => 'x86', 'amd64' => 'x64', default => undef }
+  if $arch == undef { fail("unknown architecture: ${architecture}" }
+
   $sha512 = $arch ? { 'x86' => $sha512_x86, default => $sha512_x64 }
   $args   = shellquote($path, $version, $arch, $sha512, $url)
 
