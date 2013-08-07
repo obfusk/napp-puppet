@@ -19,7 +19,7 @@ define nodejs (
   $url        = 'http://nodejs.org/dist/v__VERSION__/node-v__VERSION__-linux-__ARCH__.tar.gz',
 ) {
   $arch = $architecture ? { 'i386' => 'x86', 'amd64' => 'x64', default => undef }
-  if $arch == undef { fail("unknown architecture: ${architecture}" }
+  if $arch == undef { fail("unknown architecture: ${architecture}") }
 
   $sha512 = $arch ? { 'x86' => $sha512_x86, default => $sha512_x64 }
   $args   = shellquote($path, $version, $arch, $sha512, $url)
