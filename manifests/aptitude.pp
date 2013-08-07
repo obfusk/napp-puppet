@@ -1,6 +1,6 @@
 # --                                                            ; {{{1
 #
-# File        : manifests/site.pp
+# File        : manifests/aptitude.pp
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
 # Date        : 2013-08-07
 #
@@ -9,7 +9,9 @@
 #
 # --                                                            ; }}}1
 
-import 'path.pp'
-import 'aptitude.pp'
+Package {
+  ensure    => installed,
+  provider  => 'aptitude',
+}
 
 # vim: set tw=70 sw=2 sts=2 et fdm=marker :
