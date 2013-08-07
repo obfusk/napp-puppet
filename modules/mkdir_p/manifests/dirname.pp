@@ -1,6 +1,6 @@
 # --                                                            ; {{{1
 #
-# File        : modules/java7/manifests/jdk.pp
+# File        : modules/mkdir_p/manifests/dirname.pp
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
 # Date        : 2013-08-07
 #
@@ -9,11 +9,14 @@
 #
 # --                                                            ; }}}1
 
-class java7::jdk {
-  exec { '[package] openjdk-7-jdk':
-    command   => 'aptitude install -y -R openjdk-7-jdk',
-    creates   => '/usr/share/doc/openjdk-7-jdk',
-    logoutput => true,
+define mkdir_p::dirname (
+  $path = $title,
+) {
+  $path_sh = shellquote($path)
+
+  exec { "[mkdir_p::dirname] ${path}":
+    command => "mkdir -p \"$( dirname ${path_sh} )\""
+    unless  => "test -d \"$( dirname ${path_sh} )\""
   }
 }
 

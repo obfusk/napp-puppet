@@ -9,30 +9,27 @@
 #
 # --                                                            ; }}}1
 
-class python::venv (
-  $src    = '/opt/src',
-  $bin    = '/opt/bin',
-  $sname  = 'venv',
-  $bname  = 'venv',
-  $pull   = true,
+define python::venv (
+  $path = $title,
+  $bin  = undef,
+  $pull = false,
 ) {
-
   include python
 
-  git::repo { "${src}/${sname}":
+  git::repo { $path:
     source  => 'https://github.com/obfusk/venv.git',
     pull    => $pull,
   }
 
-  file { $bin:
-    ensure  => 'directory',
-  }
+  if $bin != undef {
+    mkdir_p::dirname { $bin: }
 
-  file { "${bin}/${bname}":
-    ensure  => link,
-    target  => "${src}/${sname}",
+    file { $bin:
+      ensure  => link,
+      target  => $path,
+      require => Exec["[mkdir_p::dirname] ${bin}"],
+    }
   }
-
 }
 
 # vim: set tw=0 sw=2 sts=2 et fdm=marker :

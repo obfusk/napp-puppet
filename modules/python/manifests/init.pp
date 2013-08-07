@@ -10,12 +10,10 @@
 # --                                                            ; }}}1
 
 class python {
-
   package { [ 'python', 'python-dev', 'python-pip',
               'python-virtualenv' ]:
     ensure => 'installed',
   }
-
 }
 
 # vim: set tw=0 sw=2 sts=2 et fdm=marker :

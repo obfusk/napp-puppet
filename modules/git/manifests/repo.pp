@@ -10,12 +10,12 @@
 # --                                                            ; }}}1
 
 define git::repo (
-  $source,              # repo
-  $path     = $title,   # path
-  $branch   = undef,    # branch to clone
-  $checkout = undef,    # [branch, tag/commit] to checkout
-  $pull     = false,    # true => pull
-  $log      = true,     # log output for pull/checkout
+  $source,
+  $path     = $title,
+  $branch   = undef,
+  $checkout = undef, # [branch, tag_or_commit]
+  $pull     = false,
+  $log      = true,
 ) {
   if $branch == undef {
     $branch_arg = ''
@@ -28,7 +28,7 @@ define git::repo (
 
   package { 'git': ensure => 'installed' }
 
-  exec { "git clone => ${path}":
+  exec { "[git clone] ${path}":
     command   => "git clone ${branch_arg} ${clone_args}",
     creates   => "${path}/.git",
     logoutput => on_failure,
@@ -36,11 +36,11 @@ define git::repo (
   }
 
   if $pull == true {
-    exec { "git pull => ${path}":
+    exec { "[git pull] ${path}":
       command   => 'git pull',
       cwd       => $path,
       logoutput => $log,
-      require   => Exec["git clone => ${path}"],
+      require   => Exec["[git clone] ${path}"],
     }
   }
 
@@ -48,12 +48,12 @@ define git::repo (
     $checkout_branch = shellquote($checkout[0])
     $checkout_commit = shellquote($checkout[1])
 
-    exec { "git checkout => ${path}":
+    exec { "[git checkout] ${path}":
       command   => "git checkout -b ${checkout_branch} ${checkout_commit}",
       unless    => "test \"$( git symbolic-ref HEAD )\" = 'refs/heads/'${checkout_branch}",
       cwd       => $path,
       logoutput => $log,
-      require   => Exec["git clone => ${path}"],
+      require   => Exec["[git clone] ${path}"],
     }
   }
 }

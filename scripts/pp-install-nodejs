@@ -1,0 +1,15 @@
+#!/bin/bash
+set -e
+path="$1" version="$2" arch="$3" sha512="$4" u1="$5"
+u2="${u1//__VERSION__/$version}"; url="${u2/__ARCH__/$arch}"
+dir="node-v${version}-linux-${arch}"
+tmp="$( mktemp -d )"; cleanup () { rm -fr "$tmp"; }; trap cleanup EXIT
+curl -s "$url" > "$tmp/$dir.tar.gz"
+sum="$( sha512sum "$tmp/$dir.tar.gz" | cut -d' ' -f1 )"
+if [ "$sum" != "$sha512" ]; then
+  echo 'sha512sum does not match' >&2; exit 1
+fi
+tar -C "$tmp" xf "$tmp/$dir.tar.gz"
+mkdir -p "$( dirname "$path" )"
+rm -fr "$path"
+mv -vT "$tmp/$dir" "$path"

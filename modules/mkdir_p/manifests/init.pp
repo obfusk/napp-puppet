@@ -1,6 +1,6 @@
 # --                                                            ; {{{1
 #
-# File        : modules/lein/manifests/opt.pp
+# File        : modules/mkdir_p/manifests/init.pp
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
 # Date        : 2013-08-07
 #
@@ -9,10 +9,15 @@
 #
 # --                                                            ; }}}1
 
-class lein::opt (
-  $path = '/opt/bin/lein',
+define mkdir_p (
+  $path = $title,
 ) {
-  lein { $path: }
+  $path_sh = shellquote($path)
+
+  exec { "[mkdir_p] ${path}":
+    command => "mkdir -p ${path_sh}"
+    unless  => "test -d ${path_sh}"
+  }
 }
 
-# vim: set tw=70 sw=2 sts=2 et fdm=marker :
+# vim: set tw=0 sw=2 sts=2 et fdm=marker :

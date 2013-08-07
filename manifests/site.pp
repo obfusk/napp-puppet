@@ -14,8 +14,8 @@ import 'aptitude.pp'
 
 node 'vm-puppet' {
   include java7::maven
-  include lein::opt
-  include python::venv
+  lein { '/opt/bin/lein': }
+  python::venv { '/opt/src/venv': bin => '/opt/bin/venv' }
 }
 
 # vim: set tw=70 sw=2 sts=2 et fdm=marker :

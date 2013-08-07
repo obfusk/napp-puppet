@@ -10,7 +10,6 @@
 # --                                                            ; }}}1
 
 class java7::maven {
-
   include java7::jdk
 
   exec { '[package] maven':
@@ -19,7 +18,6 @@ class java7::maven {
     logoutput => true,
     require   => Exec['[package] openjdk-7-jdk'],
   }
-
 }
 
 # vim: set tw=0 sw=2 sts=2 et fdm=marker :
