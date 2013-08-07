@@ -1,6 +1,6 @@
 import '../../../manifests/path.pp'
 
-package { 'git': ensure => 'installed' }
+@package { 'git': ensure => 'installed' }
 
 git::repo { "/home/$id/__TEST__/napp-puppet-1":
   source  => 'https://github.com/obfusk/napp-puppet.git',

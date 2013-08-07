@@ -1,3 +1,3 @@
-package { [ 'git', 'curl' ]:
+@package { [ 'git', 'curl' ]:
   ensure => 'installed'
 }
