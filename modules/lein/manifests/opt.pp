@@ -1,6 +1,6 @@
 # --                                                            ; {{{1
 #
-# File        : manifests/site.pp
+# File        : modules/lein/manifests/opt.pp
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
 # Date        : 2013-08-07
 #
@@ -9,13 +9,10 @@
 #
 # --                                                            ; }}}1
 
-import 'path.pp'
-import 'aptitude.pp'
-
-node 'vm-puppet' {
-  include java7::maven
-  include lein::opt
-  include python::venv
+class lein::opt (
+  $path = '/opt/bin/lein',
+) {
+  lein { $path: }
 }
 
 # vim: set tw=70 sw=2 sts=2 et fdm=marker :
