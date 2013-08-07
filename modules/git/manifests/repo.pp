@@ -2,7 +2,7 @@
 #
 # File        : modules/git/manifests/repo.pp
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2013-08-06
+# Date        : 2013-08-07
 #
 # Copyright   : Copyright (C) 2013  Felix C. Stegerman
 # Licence     : GPLv2 or EPLv1
@@ -21,23 +21,23 @@ define git::repo (
     $branch_arg = ''
   } else {
     $branch_sh  = shellquote($branch)
-    $branch_arg = "-b $branch_sh"
+    $branch_arg = "-b ${branch_sh}"
   }
 
   $clone_args = shellquote($source, $path)
 
-  exec { "git clone => $path":
-    command   => "git clone $branch_arg $clone_args",
-    creates   => "$path/.git",
+  exec { "git clone => ${path}":
+    command   => "git clone ${branch_arg} ${clone_args}",
+    creates   => "${path}/.git",
     logoutput => on_failure,
   }
 
   if $pull == true {
-    exec { "git pull => $path":
+    exec { "git pull => ${path}":
       command   => 'git pull',
       cwd       => $path,
       logoutput => $log,
-      require   => Exec["git clone => $path"],
+      require   => Exec["git clone => ${path}"],
     }
   }
 
@@ -45,12 +45,12 @@ define git::repo (
     $checkout_branch = shellquote($checkout[0])
     $checkout_commit = shellquote($checkout[1])
 
-    exec { "git checkout => $path":
-      command   => "git checkout -b $checkout_branch $checkout_commit",
-      unless    => "test \"$( git symbolic-ref HEAD )\" = 'refs/heads/'$checkout_branch",
+    exec { "git checkout => ${path}":
+      command   => "git checkout -b ${checkout_branch} ${checkout_commit}",
+      unless    => "test \"$( git symbolic-ref HEAD )\" = 'refs/heads/'${checkout_branch}",
       cwd       => $path,
       logoutput => $log,
-      require   => Exec["git clone => $path"],
+      require   => Exec["git clone => ${path}"],
     }
   }
 }

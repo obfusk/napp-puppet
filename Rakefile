@@ -32,5 +32,5 @@ end
 desc 'Sync'
 task :sync do
   to = '~/tmp/vagrant/puppet/shared/napp-puppet'
-  sh "rsync -av --progress ./ #{to}/"
+  sh "rsync -av --progress --delete --exclude=.git ./ #{to}/"
 end

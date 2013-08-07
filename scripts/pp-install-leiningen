@@ -1,0 +1,11 @@
+#!/bin/bash
+set -e
+path="$1" version="$2" sha512="$3"; url="${4/__VERSION__/$version}"
+tmp="$( mktemp -d )"; cleanup () { rm -fr "$tmp"; }; trap cleanup EXIT
+curl -s "$url" > "$tmp/lein"
+sum="$( sha512sum "$tmp/lein" | cut -d' ' -f1 )"
+if [ "$sum" != "$sha512" ]; then
+  echo 'sha512sum does not match' >&2; exit 1
+fi
+mkdir -p "$( dirname "$path" )"
+cp -vT "$tmp/lein" "$path"
