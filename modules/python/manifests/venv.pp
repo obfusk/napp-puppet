@@ -26,7 +26,7 @@ define python::venv (
 
     file { $bin:
       ensure  => link,
-      target  => $path,
+      target  => "{$path}/venv",
       require => Exec["[mkdir_p::dirname] ${bin}"],
     }
   }
