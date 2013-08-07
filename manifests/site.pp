@@ -15,6 +15,10 @@ import 'aptitude.pp'
 node 'vm-puppet' {
   include java7::maven
   lein { '/opt/bin/lein': }
+  nodejs { '/opt/pkg/node':
+    bin => '/opt/bin/node',
+    npm => '/opt/bin/npm',
+  }
   python::venv { '/opt/src/venv': bin => '/opt/bin/venv' }
 }
 
