@@ -2,4 +2,4 @@
 set -e -o pipefail
 user="$1"
 psql -t -c 'SELECT usename FROM pg_user' \
-  | tr -d ' ' | grep -xF -- "$user"
+  | tr -d ' ' | grep -q -xF -- "$user"

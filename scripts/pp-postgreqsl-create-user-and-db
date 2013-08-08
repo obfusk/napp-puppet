@@ -9,7 +9,10 @@ fi
 md5="$( echo -n "$pass$user" | md5sum | cut -d' ' -f1 )"
 sql="CREATE ROLE :\"user\" PASSWORD :'pass'"
 sql+=' NOSUPERUSER NOCREATEDB NOCREATEROLE INHERIT LOGIN;'
-echo "$sql" | psql -v user="$user" -v pass="md5$md5"
+echo "$sql" | psql -v user="$user" -v pass="md5$md5" >/dev/null
+createdb -O "$user" "$user"
 if [ -n "$passfile" ]; then
   echo "$user:$pass" >> "$passfile"
+else
+  echo "$user:$pass"
 fi
