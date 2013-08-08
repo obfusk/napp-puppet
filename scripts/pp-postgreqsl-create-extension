@@ -1,0 +1,5 @@
+#!/bin/bash
+set -e -o pipefail
+db="$1" ext="$2"
+sql='CREATE EXTENSION IF NOT EXISTS :"ext";'
+echo "$sql" | psql -d foo -v ext="$ext"

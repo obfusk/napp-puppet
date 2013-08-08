@@ -1,0 +1,5 @@
+#!/bin/bash
+set -e -o pipefail
+user="$1"
+psql -t -c 'SELECT usename FROM pg_user' \
+  | tr -d ' ' | grep -xF -- "$user"

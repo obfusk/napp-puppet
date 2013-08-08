@@ -1,0 +1,5 @@
+#!/bin/bash
+set -e -o pipefail
+db="$1"
+psql -t -c 'SELECT datname FROM pg_database' \
+  | tr -d ' ' | grep -xF -- "$db"

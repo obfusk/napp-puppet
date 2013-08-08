@@ -1,0 +1,15 @@
+#!/bin/bash
+set -e -o pipefail
+user="$1" passfile="$2"
+if [ -n "$PGPASS" ]; then
+  pass="$PGPASS"
+else
+  pass="$( pwgen -s 20 1 )"
+fi
+md5="$( echo -n "$pass$user" | md5sum | cut -d' ' -f1 )"
+sql="CREATE ROLE :\"user\" PASSWORD :'pass'"
+sql+=' NOSUPERUSER NOCREATEDB NOCREATEROLE INHERIT LOGIN;'
+echo "$sql" | psql -v user="$user" -v pass="md5$md5"
+if [ -n "$passfile" ]; then
+  echo "$user:$pass" >> "$passfile"
+fi
