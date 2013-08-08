@@ -1,0 +1,5 @@
+#!/usr/bin/python
+import sys, pymongo
+db = sys.argv[1]
+co = pymongo.Connection('mongodb://admin:admin@localhost')
+if db not in co.database_names(): exit(1)
